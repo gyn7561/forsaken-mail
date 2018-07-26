@@ -6,7 +6,7 @@
 
 let shortid = require('shortid');
 let mailin = require('./mailin');
-
+let db = require("./db");
 let onlines = new Map();
 
 module.exports = function(io) {
@@ -16,6 +16,13 @@ module.exports = function(io) {
     if(exp.test(to)) {
       let matches = to.match(exp);
       let shortid = matches[0].substring(0, matches[0].indexOf('@'));
+      let doc = {shortid:shortid,timestamp :new Date().getTime(),data};
+      db.insert(doc, function (err, newDoc) {
+        if(err){
+          console.err(err);
+          console.log(doc);
+        }
+      });
       if(onlines.has(shortid)) {
         onlines.get(shortid).emit('mail', data);
       }
