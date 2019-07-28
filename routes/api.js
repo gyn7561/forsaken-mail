@@ -15,7 +15,7 @@ router.get('/getMailList', function(req, res) {
   let limit = parseInt( req.query.limit || 5);
   let id = req.query.id;
   let db = require("../modules/db");
-  db.find({}).sort({ timestamp: -1 }).skip(0).limit(limit).exec(function (err, docs) {
+  db.find({shortid:id}).sort({ timestamp: -1 }).skip(0).limit(limit).exec(function (err, docs) {
     res.send(err||docs);
   });
 });
